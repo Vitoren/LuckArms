@@ -6,13 +6,9 @@ const short max_times = 5; //max times a flash will repeat
 const int flash_delay_min = 7;
 const int flash_delay_max = 20;
 const short max_sim = 1; //max simultaneous flashes
-//const int fcol [] = {95,115,120}; //flash color //blue
 const int fcol [] = {150,175,255}; //flash color //light blue
-//const int ncol [] = {1,1,100}; //normal color //blue
 const int ncol[] = {2,25,40};
 const int ecol [] = {ncol[0]+10,ncol[0]+10,ncol[2]+40};
-//const int fcol[] = {255,255,70}; //yellow
-//const int ncol[] = {140,140,1}; //yellow
 const short maxLength = 100; //max flash length (leds) was 35
 const short minLength = 50; // min flash length
 const short ext = 0; //how far to make the light flash extend (the dimmer part)
@@ -28,12 +24,9 @@ typedef struct
     int st; //start index
     int en; //end index
     int maxF; // max # of flashes
-    //bool on; //currently on or off
     int del; //flash delay
     int timesF; //times flashed
     long nextT; //time of next update
-    //bool valid;
-    //int timesF; //times flashed
   } flash_t;
 
 flash_t flashes [max_sim];
@@ -91,8 +84,6 @@ void flashUpdate(flash_t* f){
     int fdel = (micros()%(flash_delay_max-flash_delay_min))+flash_delay_min;
     int maxFlashes = (micros()%max_times)+1;
     //put em in
- //   f->st = start;
- //   f->en = fin;
     f->del = fdel;
     f->maxF = maxFlashes;
     //set other vals
@@ -130,11 +121,9 @@ void flashUpdate(flash_t* f){
       for(int j = 1; j<=ext; j++){
         if((f->en)+j < numLeds){
           leds[(f->en)+j] = CRGB(ecol[0],ecol[0],ecol[2]);
-          //leds[(f->en)+j] = CRGB(ncol[0]+10,ncol[0]+10,ncol[2]+40);
         }
         if((f->st)-j >= 0){
           leds[(f->st)-j] = CRGB(ecol[0],ecol[0],ecol[2]);
-          //leds[(f->en)+j] = CRGB(ncol[0]+10,ncol[0]+10,ncol[2]+40);
         }
       }
       
