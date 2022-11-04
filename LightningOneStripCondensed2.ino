@@ -4,23 +4,22 @@
 //some good ones: maxL = 20, maxSim = 12
 const short max_times = 5; //max number times a flash can repeat
 
-//range was 15-35
+const int flash_delay_min = 12; //minimum delay between a flash turning on and off was 5 15
+const int flash_delay_max = 35; //maximum delay between a flash turning on and off
+const short max_sim = 3; //max simultaneous flashes
 
-const int flash_delay_min = 12; //7 minimum delay between a flash turning on and off was 5 15
-const int flash_delay_max = 35; //15 45 maximum delay between a flash turning on and off
-const short max_sim = 3; //max simultaneous flashes 8
-//const int fcol [] = {70,70,255}; //flash color //blue-white (when on)
-const int fcol [] = {120,120,255}; //flash color //blue-white (when on) -> was 80,90,220
+const int fcol [] = {120,120,255}; //flash color //blue-white 
 const int ncol [] = {1,5,30};
-//const int ncol[] = {0,0,0};
-const short maxLength = 180; //max flash length (leds) was 35
+
+const short maxLength = 180; //max flash length (leds)
 const short minLength = 70; // min flash length
 
-const int max_wait = 1500; //maximum time to wait before issuing a new flash section after one finishes 1500
+const int max_wait = 1500; //maximum time to wait before issuing a new flash section after one finishes
 const int max_tries_to_enter = 3; //max number of times random coords will be generated when trying to add a new flash block
 
 //Number of LEDS per strip
 const int numLeds = 288;
+
 //Total # of leds across all strips
 const int total_leds = 1300;
 
@@ -36,7 +35,6 @@ int j;
 int temp;
 
 int stripNum;
-//int sel;
 
 //Pin numbers
 int sel0 = 5;
@@ -47,8 +45,6 @@ int switchDelay = 1;
 
 CRGB leds[numLeds];
 
-//led boolean strips
-//byte strip[numLeds];
 byte strip[numLeds];
 
 typedef struct //data structure for a flash block
@@ -96,7 +92,6 @@ void setup(){
   FastLED.show();
   delay(switchDelay);
   digitalWrite(sel0,LOW);
-//  sel=0;
 }
 
 bool getBit(int index){
@@ -117,25 +112,21 @@ void setPorts(){
       digitalWrite(sel0,LOW);
       digitalWrite(sel1,LOW);
       digitalWrite(sel2,LOW);
-      //sel=0;
     }
     else if(stripNum == 1){
       digitalWrite(sel0,HIGH);
       digitalWrite(sel1,LOW);
       digitalWrite(sel2,LOW);
-     // sel=1;
     }
     else if(stripNum == 2){
       digitalWrite(sel0,LOW);
       digitalWrite(sel1,HIGH);
       digitalWrite(sel2,LOW);
-     // sel=2;
     }
     else if(stripNum == 3){
       digitalWrite(sel0,HIGH);
       digitalWrite(sel1,HIGH);
       digitalWrite(sel2,LOW);
-    //  sel=3;
     }
     else if(stripNum == 4){
         digitalWrite(sel0,LOW);
@@ -147,7 +138,6 @@ void setPorts(){
         digitalWrite(sel1,LOW);
         digitalWrite(sel2,HIGH);
     }
-    //delay(switchDelay);
 }
 
 void showLeds(int st, int en){
@@ -222,7 +212,6 @@ void flashUpdate(flash_t* f,flash_t flashes[]){
     if(f->valid){
       if(f->on){ //turn it off
         for(i = f->st; i<=f->en;++i){
-          //strip[i] = false;
           setBit(i,0);
         }
         f->on = false;
